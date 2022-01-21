@@ -1,0 +1,45 @@
+{
+    "name": "hmones/laravel-digest",
+    "description": ":package_description",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Haytham Mones",
+            "email": "haytham.mones@gmail.com",
+            "homepage": "https://haythammones.com"
+        }
+    ],
+    "homepage": "https://github.com/hmones/laravel-digest",
+    "keywords": ["Laravel", "LaravelDigest"],
+    "minimum-stability": "stable",
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "require": {
+        "illuminate/support": "~7|~8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~9.0",
+        "orchestra/testbench": "~5|~6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Hmones\\LaravelDigest\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Hmones\\LaravelDigest\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Hmones\\LaravelDigest\\LaravelDigestServiceProvider"
+            ],
+            "aliases": {
+                "LaravelDigest": "Hmones\\LaravelDigest\\Facades\\LaravelDigest"
+            }
+        }
+    }
+}
