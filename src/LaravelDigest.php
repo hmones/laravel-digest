@@ -2,51 +2,56 @@
 
 namespace Hmones\LaravelDigest;
 
-use Illuminate\Support\Facades\DB;
+use Hmones\LaravelDigest\Models\Digest as Model;
+use Illuminate\Support\Facades\Mail;
 
 class LaravelDigest
 {
-    protected $batch;
-    protected $batchId;
-    protected $mailable;
-    protected $data;
+    protected $method;
     protected $digests;
-    protected $frequency;
-    protected $time;
-    protected $day;
 
-    public function __construct(string $batch, string $mailable, array $data, string $frequency = null, string $time = null, int $day = null)
+    public function __construct()
     {
-        $this->batchId = $batch;
-        $this->mailable = $mailable;
-        $this->data = $data;
-        $this->frequency = $frequency;
-        $this->time = $time;
-        $this->day = $day;
-        $this->digests = DB::table('digests');
-        $this->batch = $this->digests->where('batch', $batch);
+        $this->method = config('laravel-digest.method');
     }
 
-    public function add(): ?array
+    public function add(string $batch, string $mailable, $data, string $frequency = null): bool
     {
-        $count = $this->storeEmail();
+        if (!$this->isValidInput($mailable, $frequency)) {
+            return false;
+        }
 
-        return $count >= config('laravel-digest.amount.threshold') && config('laravel-digest.amount.threshold') ? $this->getData() : null;
+        $batchCount = $this->addToBatch($batch, $mailable, $frequency, $data);
+
+        if (config('laravel-digest.amount.enabled') && $batchCount >= config('laravel-digest.amount.threshold')) {
+            $this->sendBatch($batch, $mailable, $this->method);
+            $this->deleteBatch($batch);
+        }
+
+        return true;
     }
 
-    protected function storeEmail(): int
+    protected function addToBatch(string $batch, string $mailable, ?string $frequency, $data): int
     {
-        $this->digests->insert([
-            'batch'    => $this->batchId,
-            'mailable' => $this->mailable,
-            'data'     => $this->data
-        ]);
+        Model::create(compact(['batch', 'mailable', 'frequency', 'data']));
 
-        return $this->batch->count();
+        return Model::where('batch', $batch)->count();
     }
 
-    protected function getData(): array
+    protected function sendBatch($batch, $mailable, $method): void
     {
-        return $this->batch->pluck('data')->toArray();
+        $data = Model::where('batch', $batch)->latest()->pluck('data')->toArray();
+
+        Mail::$method(new $mailable($data));
+    }
+
+    protected function deleteBatch(string $batch): void
+    {
+        Model::where('batch', $batch)->delete();
+    }
+
+    protected function isValidInput(string $mailable, ?string $frequency): bool
+    {
+        return class_exists($mailable) && in_array($frequency, [null, Model::DAILY, Model::WEEKLY, Model::MONTHLY]);
     }
 }
