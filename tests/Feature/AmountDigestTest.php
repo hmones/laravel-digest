@@ -5,6 +5,7 @@ namespace Hmones\LaravelDigest\Tests\Feature;
 use Hmones\LaravelDigest\Mail\DefaultMailable;
 use Hmones\LaravelDigest\Models\Digest as DigestModel;
 use Hmones\LaravelDigest\Tests\TestCase;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
 
 class AmountDigestTest extends TestCase
@@ -12,7 +13,7 @@ class AmountDigestTest extends TestCase
     protected $testData = [
         ['First Name'],
         ['Second Name'],
-        ['Third Name']
+        ['Third Name'],
     ];
 
     protected $thresholdConfKey = 'laravel-digest.amount.threshold';
@@ -23,6 +24,15 @@ class AmountDigestTest extends TestCase
         $this->addEmails($this->testData);
         Mail::assertQueued(DefaultMailable::class, fn ($mail) => $mail->data === $this->testData);
         $this->assertEquals(DigestModel::count(), 0);
+    }
+
+    public function test_digest_emails_with_no_frequency_are_sent_successfully_after_threshold(): void
+    {
+        config([$this->thresholdConfKey => 3]);
+        $this->addEmails(['Fourth Name'], 'testBatch', DigestModel::DAILY);
+        $this->addEmails($this->testData);
+        Mail::assertQueued(DefaultMailable::class, fn ($mail) => $mail->data === $this->testData);
+        $this->assertEquals(DigestModel::count(), 1);
     }
 
     public function test_digest_emails_are_not_sent_if_threshold_option_not_enabled(): void

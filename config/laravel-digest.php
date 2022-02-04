@@ -22,11 +22,11 @@ return [
         ],
         'weekly' => [
             'time'      => '00:00',
-            'day'       => 1
+            'day'       => 1,
         ],
         'monthly' => [
             'time'      => '00:00',
-            'day'       => 1
+            'day'       => 1,
         ]
     ],
     /*
@@ -36,5 +36,5 @@ return [
     'amount' => [
         'enabled'   => true,
         'threshold' => 10,
-    ]
+    ],
 ];

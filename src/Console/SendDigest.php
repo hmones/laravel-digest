@@ -14,7 +14,7 @@ class SendDigest extends Command
 
     public function handle(): void
     {
-        if (!config('laravel-digest.frequency.enabled')) {
+        if (! config('laravel-digest.frequency.enabled')) {
             $this->info('The digest frequency option is not enabled from the configuration, please enable it first');
 
             return;
@@ -22,7 +22,7 @@ class SendDigest extends Command
 
         $frequency = $this->argument('frequency');
 
-        if (!in_array($frequency, ['daily', 'weekly', 'monthly'])) {
+        if (! in_array($frequency, ['daily', 'weekly', 'monthly'])) {
             $this->error('The frequency you selected is not available!');
 
             return;
