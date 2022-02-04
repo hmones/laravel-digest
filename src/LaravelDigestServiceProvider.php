@@ -3,7 +3,6 @@
 namespace Hmones\LaravelDigest;
 
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Mail\Mailer;
 use Illuminate\Support\ServiceProvider;
 
 class LaravelDigestServiceProvider extends ServiceProvider
@@ -24,12 +23,7 @@ class LaravelDigestServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../config/laravel-digest.php', 'laravel-digest');
 
-        Mailer::macro('digest', function (string $batch, string $mailable, array $data) {
-            $data = app(LaravelDigest::class)->add($batch, $mailable, $data);
-            $method = config('laravel-digest.method');
-
-            return $data ? $this->$method(app($mailable, $data)) : null;
-        });
+        $this->app->singleton('digest', fn () => new LaravelDigest());
     }
 
     public function provides(): array

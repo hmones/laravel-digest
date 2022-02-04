@@ -2,8 +2,8 @@
 
 namespace Hmones\LaravelDigest\Console;
 
+use Hmones\LaravelDigest\Models\Digest;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class SendDigest extends Command
@@ -14,6 +14,12 @@ class SendDigest extends Command
 
     public function handle(): void
     {
+        if (!config('laravel-digest.frequency.enabled')) {
+            $this->info('The digest frequency option is not enabled from the configuration, please enable it first');
+
+            return;
+        }
+
         $frequency = $this->argument('frequency');
 
         if (!in_array($frequency, ['daily', 'weekly', 'monthly'])) {
@@ -30,19 +36,19 @@ class SendDigest extends Command
 
     protected function sendBatches(string $frequency): void
     {
-        $batches = DB::table('digests')->where('frequency', $frequency)->orderBy('created_at', 'desc')->groupBy('batch')->get();
+        $batches = Digest::where('frequency', $frequency)->orderBy('created_at', 'desc')->groupBy('batch')->get();
 
         foreach ($batches as $batch) {
-            $email = $batch->first();
+            $mailable = optional($batch->first())->mailable;
             $method = config('laravel-digest.method');
             $data = $batch->pluck('data')->toArray();
 
-            Mail::$method(resolve($email->mailable, $data));
+            Mail::$method(new $mailable($data));
         }
     }
 
     protected function deleteBatches(string $frequency): void
     {
-        DB::table('digests')->where('frequency', $frequency)->delete();
+        Digest::where('frequency', $frequency)->delete();
     }
 }
