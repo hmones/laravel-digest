@@ -17,7 +17,7 @@ class LaravelDigest
 
     public function add(string $batch, string $mailable, $data, string $frequency = null): bool
     {
-        if (!$this->isValidInput($mailable, $frequency)) {
+        if (! $this->isValidInput($mailable, $frequency)) {
             return false;
         }
 
@@ -35,19 +35,19 @@ class LaravelDigest
     {
         Model::create(compact(['batch', 'mailable', 'frequency', 'data']));
 
-        return Model::where('batch', $batch)->count();
+        return Model::where('batch', $batch)->whereNull('frequency')->count();
     }
 
     protected function sendBatch($batch, $mailable, $method): void
     {
-        $data = Model::where('batch', $batch)->latest()->pluck('data')->toArray();
+        $data = Model::where('batch', $batch)->whereNull('frequency')->latest()->pluck('data')->toArray();
 
         Mail::$method(new $mailable($data));
     }
 
     protected function deleteBatch(string $batch): void
     {
-        Model::where('batch', $batch)->delete();
+        Model::where('batch', $batch)->whereNull('frequency')->delete();
     }
 
     protected function isValidInput(string $mailable, ?string $frequency): bool
