@@ -27,7 +27,7 @@ return [
         'monthly' => [
             'time'      => '00:00',
             'day'       => 1,
-        ]
+        ],
     ],
     /*
      * Amount option specifies whether you want to send the gigest email every specific number of emails that accumulate for the digest

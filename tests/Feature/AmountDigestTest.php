@@ -5,7 +5,6 @@ namespace Hmones\LaravelDigest\Tests\Feature;
 use Hmones\LaravelDigest\Mail\DefaultMailable;
 use Hmones\LaravelDigest\Models\Digest as DigestModel;
 use Hmones\LaravelDigest\Tests\TestCase;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
 
 class AmountDigestTest extends TestCase
