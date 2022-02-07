@@ -13,7 +13,7 @@ class LaravelDigestServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         $this->commands([
-            SendDigest::class
+            SendDigest::class,
         ]);
 
         $this->app->afterResolving(Schedule::class, function (Schedule $schedule) {
