@@ -13,6 +13,12 @@ class TestCase extends Test
 {
     use RefreshDatabase;
 
+    protected $testData = [
+        ['name' => 'First'],
+        ['name' => 'Second'],
+        ['name' => 'Third'],
+    ];
+
     public function test_digest_emails_are_successfully_to_database(): void
     {
         $data = ['first', 'second'];

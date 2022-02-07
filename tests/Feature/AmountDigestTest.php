@@ -9,12 +9,6 @@ use Illuminate\Support\Facades\Mail;
 
 class AmountDigestTest extends TestCase
 {
-    protected $testData = [
-        ['name' => 'First'],
-        ['name' => 'Second'],
-        ['name' => 'Third'],
-    ];
-
     public function test_digest_emails_are_sent_successfully_after_threshold(): void
     {
         $this->addEmails($this->testData);
