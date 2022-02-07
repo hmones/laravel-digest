@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\Mail;
 class AmountDigestTest extends TestCase
 {
     protected $testData = [
-        ['First Name'],
-        ['Second Name'],
-        ['Third Name'],
+        ['name' => 'First'],
+        ['name' => 'Second'],
+        ['name' => 'Third'],
     ];
 
     protected $thresholdConfKey = 'laravel-digest.amount.threshold';
@@ -28,7 +28,7 @@ class AmountDigestTest extends TestCase
     public function test_digest_emails_with_no_frequency_are_sent_successfully_after_threshold(): void
     {
         config([$this->thresholdConfKey => 3]);
-        $this->addEmails(['Fourth Name'], 'testBatch', DigestModel::DAILY);
+        $this->addEmails(['name' => 'Fourth'], 'testBatch', DigestModel::DAILY);
         $this->addEmails($this->testData);
         Mail::assertQueued(DefaultMailable::class, fn ($mail) => $mail->data === $this->testData);
         $this->assertEquals(DigestModel::count(), 1);
