@@ -1,6 +1,6 @@
 <?php
 
-namespace Hmones\LaravelDigest\Console;
+namespace Hmones\LaravelDigest\Console\Commands;
 
 use Hmones\LaravelDigest\Models\Digest;
 use Illuminate\Console\Command;
@@ -22,7 +22,7 @@ class SendDigest extends Command
 
         $frequency = $this->argument('frequency');
 
-        if (! in_array($frequency, ['daily', 'weekly', 'monthly'])) {
+        if (! in_array($frequency, [Digest::DAILY, Digest::WEEKLY, Digest::MONTHLY])) {
             $this->error('The frequency you selected is not available!');
 
             return;
@@ -31,7 +31,7 @@ class SendDigest extends Command
         $this->info('Sending '.$frequency.' emails');
         $this->sendBatches($frequency);
         $this->deleteBatches($frequency);
-        $this->info(ucfirst($frequency).'emails sent');
+        $this->info(ucfirst($frequency).' emails sent');
     }
 
     protected function sendBatches(string $frequency): void
