@@ -2,6 +2,7 @@
 
 namespace Hmones\LaravelDigest;
 
+use Hmones\LaravelDigest\Console\Commands\SendDigest;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\ServiceProvider;
 
@@ -11,8 +12,11 @@ class LaravelDigestServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
-        $this->app->booted(function () {
-            $schedule = $this->app->make(Schedule::class);
+        $this->commands([
+            SendDigest::class
+        ]);
+
+        $this->app->afterResolving(Schedule::class, function (Schedule $schedule) {
             $schedule->command('digest:send daily')->dailyAt(config('laravel-digest.frequency.daily.time'));
             $schedule->command('digest:send weekly')->weeklyOn(config('laravel-digest.frequency.weekly.day'), config('laravel-digest.frequency.weekly.time'));
             $schedule->command('digest:send monthly')->monthlyOn(config('laravel-digest.frequency.monthly.day'), config('laravel-digest.frequency.monthly.time'));
