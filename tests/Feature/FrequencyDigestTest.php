@@ -17,7 +17,7 @@ class FrequencyDigestTest extends TestCase
     protected $dailyDigestCommand = 'digest:send daily';
     protected $weeklyDigestCommand = 'digest:send weekly';
     protected $monthlyDigestCommand = 'digest:send monthly';
-    protected $batchName ='testBatch';
+    protected $batchName = 'testBatch';
 
     public function test_frequency_digest_email_sending_events_are_registered(): void
     {
@@ -41,7 +41,7 @@ class FrequencyDigestTest extends TestCase
     public function test_frequency_digest_emails_sending_events_are_not_sent_when_not_enabled(): void
     {
         config(['laravel-digest.frequency.enabled' => false]);
-        $message =  'The digest frequency option is not enabled from the configuration, please enable it first';
+        $message = 'The digest frequency option is not enabled from the configuration, please enable it first';
         $this->addEmails($this->testData, $this->batchName, DigestModel::DAILY);
         $this->addEmails($this->testData, $this->batchName, DigestModel::WEEKLY);
         $this->addEmails($this->testData, $this->batchName, DigestModel::MONTHLY);
