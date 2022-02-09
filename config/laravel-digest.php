@@ -6,7 +6,7 @@ return [
      * Make sure if you choose queue that your mailable is queueable for the best performance.
      * The default value is queue
      */
-    'method' => 'queue',
+    'method' => env('DIGEST_METHOD', 'queue'),
     /*
      * Duration option specifies whether you want to send the digest mail every specific period.
      * The option can be enabled, disabled by setting enabled flag.
@@ -16,17 +16,17 @@ return [
      * for monthly mails the day is the day of the month and for weekly mails the day is the day of the week, where sunday is 1
      */
     'frequency' => [
-        'enabled'   => true,
+        'enabled'   => env('DIGEST_FREQUENCY_ENABLED', true),
         'daily' => [
-            'time'      => '00:00',
+            'time'      => env('DIGEST_DAILY_TIME', '00:00'),
         ],
         'weekly' => [
-            'time'      => '00:00',
-            'day'       => 1,
+            'time'      => env('DIGEST_WEEKLY_TIME', '00:00'),
+            'day'       => env('DIGEST_WEEKLY_DAY', 1),
         ],
         'monthly' => [
-            'time'      => '00:00',
-            'day'       => 1,
+            'time'      => env('DIGEST_MONTHLY_TIME', '00:00'),
+            'day'       => env('DIGEST_MONTHLY_DAY', 1),
         ],
         /*
          * You can define here multiple custom scenarios under different names, that fits your needs,
@@ -41,7 +41,7 @@ return [
      * This can be optimum for frequently recurring issues on your app that you would like to be informed about after certain threshold
      */
     'amount' => [
-        'enabled'   => true,
-        'threshold' => 10,
+        'enabled'   => env('DIGEST_AMOUNT_ENABLED', true),
+        'threshold' => env('DIGEST_AMOUNT_THRESHOLD', 10),
     ],
 ];
