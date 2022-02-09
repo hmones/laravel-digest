@@ -17,6 +17,7 @@ class FrequencyDigestTest extends TestCase
     protected $dailyDigestCommand = 'digest:send daily';
     protected $weeklyDigestCommand = 'digest:send weekly';
     protected $monthlyDigestCommand = 'digest:send monthly';
+    protected $customDigestCommand = 'digest:send custom';
     protected $batchName = 'testBatch';
 
     public function test_frequency_digest_email_sending_events_are_registered(): void
@@ -30,11 +31,13 @@ class FrequencyDigestTest extends TestCase
             $this->dailyDigestCommand,
             $this->weeklyDigestCommand,
             $this->monthlyDigestCommand,
+            $this->customDigestCommand,
         ]);
         $this->assertEquals($frequency, [
             '0 0 * * *',
             '0 0 * * 1',
             '0 0 1 * *',
+            '0 0 1 1 *',
         ]);
     }
 
@@ -76,6 +79,31 @@ class FrequencyDigestTest extends TestCase
         $this->artisan($this->monthlyDigestCommand)
             ->expectsOutput('Sending monthly emails')
             ->expectsOutput('Monthly emails sent');
+        Mail::assertQueued(DefaultMailable::class, fn ($mail) => $mail->data === $this->testData);
+        $this->assertEquals(DigestModel::count(), 0);
+    }
+
+    public function test_custom_emails_sent_successfully(): void
+    {
+        config(['laravel-digest.frequency' => [
+            'enabled'   => true,
+            'daily' => [
+                'time'      => '12:00',
+            ],
+            'weekly' => [
+                'time'      => '13:00',
+                'day'       => 1,
+            ],
+            'monthly' => [
+                'time'      => '14:00',
+                'day'       => 2,
+            ],
+            'test' => '0 0 1 1 *',
+        ]]);
+        $this->addEmails($this->testData, $this->batchName, 'test');
+        $this->artisan('digest:send test')
+            ->expectsOutput('Sending test emails')
+            ->expectsOutput('Test emails sent');
         Mail::assertQueued(DefaultMailable::class, fn ($mail) => $mail->data === $this->testData);
         $this->assertEquals(DigestModel::count(), 0);
     }
