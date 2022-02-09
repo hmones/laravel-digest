@@ -88,15 +88,15 @@ class FrequencyDigestTest extends TestCase
         config(['laravel-digest.frequency' => [
             'enabled'   => true,
             'daily' => [
-                'time'      => '00:00',
+                'time'      => '12:00',
             ],
             'weekly' => [
-                'time'      => '00:00',
+                'time'      => '13:00',
                 'day'       => 1,
             ],
             'monthly' => [
-                'time'      => '00:00',
-                'day'       => 1,
+                'time'      => '14:00',
+                'day'       => 2,
             ],
             'test' => '0 0 1 1 *',
         ]]);
