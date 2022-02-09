@@ -2,7 +2,8 @@
 
 namespace Hmones\LaravelDigest\Console\Commands;
 
-use Hmones\LaravelDigest\Models\Digest;
+use Hmones\LaravelDigest\Models\Digest as Model;
+use Hmones\LaravelDigest\Facades\Digest;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
@@ -22,7 +23,7 @@ class SendDigest extends Command
 
         $frequency = $this->argument('frequency');
 
-        if (! in_array($frequency, [Digest::DAILY, Digest::WEEKLY, Digest::MONTHLY])) {
+        if (! in_array($frequency, Digest::getFrequencies())) {
             $this->error('The frequency you selected is not available!');
 
             return;
@@ -36,7 +37,7 @@ class SendDigest extends Command
 
     protected function sendBatches(string $frequency): void
     {
-        $batches = Digest::where('frequency', $frequency)->orderBy('created_at', 'desc')->groupBy('batch')->get();
+        $batches = Model::where('frequency', $frequency)->orderBy('created_at', 'desc')->groupBy('batch')->get();
 
         foreach ($batches as $batch) {
             $mailable = optional($batch->first())->mailable;
@@ -49,6 +50,6 @@ class SendDigest extends Command
 
     protected function deleteBatches(string $frequency): void
     {
-        Digest::where('frequency', $frequency)->delete();
+        Model::where('frequency', $frequency)->delete();
     }
 }

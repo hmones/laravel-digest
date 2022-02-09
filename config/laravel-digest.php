@@ -28,6 +28,13 @@ return [
             'time'      => '00:00',
             'day'       => 1,
         ],
+        /*
+         * You can define here multiple custom scenarios under different names, that fits your needs,
+         * each custom scenario should have a cron expression that specifies the custom schedule that fits your needs.
+         * A cron expression takes the following format (default is yearly):
+         * *(minute) *(hour) *(day of month) *(month) *(day of week)
+         */
+        'custom' => '0 0 1 1 *',
     ],
     /*
      * Amount option specifies whether you want to send the gigest email every specific number of emails that accumulate for the digest
