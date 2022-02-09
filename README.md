@@ -52,6 +52,7 @@ The configuration file contains the following parameters:
 - `frequency.monthly.day` if frequency is enabled this parameter is used as the day to send the monthly digest emails
   - Env variable: `DIGEST_MONTHLY_DAY`
   - Default value: `1`
+- `frequency.custom` you can set as much custom frequency definitions as you want and the parameter takes a valid cron expression
 - `amount.enabled` whether you would like to enable sending emails every certain amount per batch
   - Env variable: `DIGEST_AMOUNT_ENABLED`
   - Default value: `true`
@@ -125,9 +126,12 @@ class UserObserver
     {
         $batchId = 'userCreated';
         $mailable = UserCreatedMailable::class;
+        //Data can also be set to null if you don't want to attach any data to the email
         $data = ['name' => $user->name];
+        //Frequency can take values such as daily, weekly, monthly, custom or an integer threshold 10, 20 ...etc 
+        $frequency = 'custom';
         
-        Digest::add($batchId, $mailable, $data);
+        Digest::add($batchId, $mailable, $data, $frequency);
     }
 }
 ```
