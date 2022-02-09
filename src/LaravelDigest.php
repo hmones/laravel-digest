@@ -69,6 +69,6 @@ class LaravelDigest
 
     protected function isValidInput(string $mailable, ?string $frequency): bool
     {
-        return class_exists($mailable) && (in_array($frequency, $this->getFrequencies()) || (int)$frequency !== 0 || is_null($frequency));
+        return class_exists($mailable) && (in_array($frequency, $this->getFrequencies()) || (int) $frequency !== 0 || is_null($frequency));
     }
 }

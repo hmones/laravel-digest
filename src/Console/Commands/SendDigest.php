@@ -2,8 +2,8 @@
 
 namespace Hmones\LaravelDigest\Console\Commands;
 
-use Hmones\LaravelDigest\Models\Digest as Model;
 use Hmones\LaravelDigest\Facades\Digest;
+use Hmones\LaravelDigest\Models\Digest as Model;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 

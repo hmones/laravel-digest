@@ -21,8 +21,7 @@ class LaravelDigestServiceProvider extends ServiceProvider
             $schedule->command('digest:send daily')->dailyAt(config('laravel-digest.frequency.daily.time'));
             $schedule->command('digest:send weekly')->weeklyOn(config('laravel-digest.frequency.weekly.day'), config('laravel-digest.frequency.weekly.time'));
             $schedule->command('digest:send monthly')->monthlyOn(config('laravel-digest.frequency.monthly.day'), config('laravel-digest.frequency.monthly.time'));
-            foreach (Digest::getCustomFrequencies() as $name => $cron)
-            {
+            foreach (Digest::getCustomFrequencies() as $name => $cron) {
                 $schedule->command('digest:send '.$name)->cron($cron);
             }
         });
