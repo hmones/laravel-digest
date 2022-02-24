@@ -11,11 +11,17 @@ class LaravelDigestServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                SendDigest::class,
+            ]);
+        }
+
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
-        $this->commands([
-            SendDigest::class,
-        ]);
+        $this->publishes([
+            __DIR__.'/../config/laravel-digest.php' => config_path('laravel-digest.php'),
+        ], 'laravel-digest-config');
 
         $this->app->afterResolving(Schedule::class, function (Schedule $schedule) {
             $schedule->command('digest:send daily')->dailyAt(config('laravel-digest.frequency.daily.time'));
@@ -37,12 +43,5 @@ class LaravelDigestServiceProvider extends ServiceProvider
     public function provides(): array
     {
         return ['laravel-digest'];
-    }
-
-    protected function bootForConsole(): void
-    {
-        $this->publishes([
-            __DIR__.'/../config/laravel-digest.php' => config_path('laravel-digest.php'),
-        ], 'laravel-digest.config');
     }
 }

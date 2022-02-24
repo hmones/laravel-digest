@@ -63,7 +63,7 @@ The configuration file contains the following parameters:
 ## Usage
 
 To create an email digest, make sure you have the following first:
-- A mailable, configured with the sending addresses and email views and subject. 
+- A mailable, configured with the sending addresses and email views and subject.
 - The mailable should accept an array variable in its constructor, this array variable will contain all the records of data passed to individual emails concatenated and sent automatically by the package to the mailable to compile the views for sending the digest.
 
 Example: Sending a digest email every time 10 new users register on the website with a summary of their names.
@@ -101,24 +101,23 @@ class UserCreatedMailable extends Mailable
 <html>
 <head><title>Sample Email</title></head>
 <body>
-    <h1>The following users have just registered:</h1>
-    <ol>
-        @foreach($data as $record)
-            <li>{{$record['name']}}</li>
-        @endforeach
-    </ol>
+<h1>The following users have just registered:</h1>
+<ol>
+  @foreach($data as $record)
+  <li>{{$record['name']}}</li>
+  @endforeach
+</ol>
 </body>
 </html>
 ```
-4. Create an observer for user creation and add an record to the digest every time a user is created: 
+4. Create an observer for user creation and add an record to the digest every time a user is created:
+
 ```php
 <?php
 
 namespace App\Observers;
 
-use App\Models\User;
-use Hmones\LaravelDigest\Facades\Digest;
-use App\Mail\UserCreatedMailable;
+use App\Mail\UserCreatedMailable;use App\Models\User;use Hmones\LaravelDigest\Facades\Digest;
 
 class UserObserver
 {
@@ -129,7 +128,7 @@ class UserObserver
         //Data can also be set to null if you don't want to attach any data to the email
         $data = ['name' => $user->name];
         //Frequency can take values such as daily, weekly, monthly, custom or an integer threshold 10, 20 ...etc 
-        $frequency = 'custom';
+        $frequency = 10;
         
         Digest::add($batchId, $mailable, $data, $frequency);
     }
