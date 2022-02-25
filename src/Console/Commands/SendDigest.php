@@ -37,7 +37,7 @@ class SendDigest extends Command
 
     protected function sendBatches(string $frequency): void
     {
-        $batches = Model::where('frequency', $frequency)->orderBy('created_at', 'desc')->groupBy('batch')->get();
+        $batches = Model::where('frequency', $frequency)->orderBy('created_at', 'desc')->get()->groupBy('batch');
 
         foreach ($batches as $batch) {
             $mailable = optional($batch->first())->mailable;
