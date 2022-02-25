@@ -117,7 +117,9 @@ class UserCreatedMailable extends Mailable
 
 namespace App\Observers;
 
-use App\Mail\UserCreatedMailable;use App\Models\User;use Hmones\LaravelDigest\Facades\Digest;
+use App\Mail\UserCreatedMailable;
+use App\Models\User;
+use Hmones\LaravelDigest\Facades\Digest;
 
 class UserObserver
 {
