@@ -13,7 +13,7 @@ class CreateDigestsTable extends Migration
             $table->string('batch');
             $table->string('mailable');
             $table->string('frequency')->nullable();
-            $table->json('data')->nullable();
+            $table->text('data')->nullable();
             $table->timestamps();
         });
     }
