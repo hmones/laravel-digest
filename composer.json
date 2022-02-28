@@ -1,6 +1,6 @@
 {
     "name": "hmones/laravel-digest",
-    "description": ":package_description",
+    "description": "A simple package to create and send digest emails every certain period or when the amount reaches a certain threshold.",
     "license": "MIT",
     "authors": [
         {
