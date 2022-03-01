@@ -39,7 +39,6 @@ class AmountDigestTest extends TestCase
         config(['laravel-digest.amount.enabled' => false]);
         $this->addEmails($this->testData);
         Mail::assertNothingQueued();
-        $this->assertEquals(DigestModel::count(), 3);
     }
 
     public function test_digest_emails_are_not_queued_if_method_option_is_set_to_send(): void
