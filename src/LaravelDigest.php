@@ -47,7 +47,7 @@ class LaravelDigest
         $batchRecords = Model::where('batch', $batch)->whereNotIn('frequency', $this->frequencies)->latest();
 
         if (config('laravel-digest.amount.enabled') && $batchRecords->count() >= $frequency) {
-            $this->sendBatch($batchRecords->pluck('data')->toArray(), $mailable, $this->method);
+            $this->sendBatch($this->method, $mailable, $batchRecords->pluck('data')->toArray());
             $batchRecords->delete();
         }
 
@@ -61,9 +61,8 @@ class LaravelDigest
 
     protected function isValidFrequency($frequency): bool
     {
-        return (in_array($frequency, $this->getFrequencies()) && config('laravel-digest.frequency.enabled'))
-            || (is_int($frequency) && $frequency !== 0 && config('laravel-digest.amount.enabled'))
-            || (is_null($frequency) && config('laravel-digest.amount.enabled'));
+        return (config('laravel-digest.frequency.enabled') && in_array($frequency, $this->frequencies))
+            || (config('laravel-digest.amount.enabled') && ((int) $frequency !== 0 || is_null($frequency)));
     }
 
     protected function isValidMailable(string $mailable): bool
