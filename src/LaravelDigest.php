@@ -9,10 +9,12 @@ class LaravelDigest
 {
     protected $method;
     protected $digests;
+    protected $frequencies;
 
     public function __construct()
     {
-        $this->method = config('laravel-digest.method');
+        $this->method = config('laravel-digest.method', 'queue');
+        $this->frequencies = $this->getFrequencies();
     }
 
     public function getCustomFrequencies(): array
@@ -30,45 +32,42 @@ class LaravelDigest
 
     public function add(string $batch, string $mailable, $data, $frequency = null): bool
     {
-        if (! $this->isValidInput($mailable, $frequency)) {
+        if (! $this->isValidFrequency($frequency) || ! $this->isValidMailable($mailable)) {
             return false;
         }
 
-        if (is_null($frequency)) {
-            $frequency = config('laravel-digest.amount.threshold');
+        $frequency = $frequency ?? config('laravel-digest.amount.threshold');
+
+        Model::create(compact(['batch', 'mailable', 'frequency', 'data']));
+
+        if (in_array($frequency, $this->frequencies)) {
+            return true;
         }
 
-        $batchCount = $this->addToBatch($batch, $mailable, $frequency, $data);
+        $batchRecords = Model::where('batch', $batch)->whereNotIn('frequency', $this->frequencies)->latest();
 
-        if (config('laravel-digest.amount.enabled') && $batchCount >= $frequency) {
-            $this->sendBatch($batch, $mailable, $this->method);
-            $this->deleteBatch($batch);
+        if (config('laravel-digest.amount.enabled') && $batchRecords->count() >= $frequency) {
+            $this->sendBatch($batchRecords->pluck('data')->toArray(), $mailable, $this->method);
+            $batchRecords->delete();
         }
 
         return true;
     }
 
-    protected function addToBatch(string $batch, string $mailable, ?string $frequency, $data): int
+    protected function sendBatch(string $method, string $mailable, array $data): void
     {
-        Model::create(compact(['batch', 'mailable', 'frequency', 'data']));
-
-        return Model::where('batch', $batch)->whereNotIn('frequency', $this->getFrequencies())->count();
-    }
-
-    protected function sendBatch($batch, $mailable, $method): void
-    {
-        $data = Model::where('batch', $batch)->whereNotIn('frequency', $this->getFrequencies())->latest()->pluck('data')->toArray();
-
         Mail::$method(new $mailable($data));
     }
 
-    protected function deleteBatch(string $batch): void
+    protected function isValidFrequency($frequency): bool
     {
-        Model::where('batch', $batch)->whereNotIn('frequency', $this->getFrequencies())->delete();
+        return (in_array($frequency, $this->getFrequencies()) && config('laravel-digest.frequency.enabled'))
+            || (is_int($frequency) && $frequency !== 0 && config('laravel-digest.amount.enabled'))
+            || (is_null($frequency) && config('laravel-digest.amount.enabled'));
     }
 
-    protected function isValidInput(string $mailable, ?string $frequency): bool
+    protected function isValidMailable(string $mailable): bool
     {
-        return class_exists($mailable) && (in_array($frequency, $this->getFrequencies()) || (int) $frequency !== 0 || is_null($frequency));
+        return class_exists($mailable);
     }
 }
