@@ -16,11 +16,11 @@ class LaravelDigest
     {
         $this->method = config('laravel-digest.method', 'queue');
         $this->frequencies = array_keys(array_filter(config('laravel-digest.frequency'), fn ($key) => $key !== 'enabled', ARRAY_FILTER_USE_KEY));
-        $this->customFrequencies = array_filter(config('laravel-digest.frequency'), fn ($key) => !in_array($key, [
+        $this->customFrequencies = array_filter(config('laravel-digest.frequency'), fn ($key) => ! in_array($key, [
             'enabled',
             'daily',
             'weekly',
-            'monthly'
+            'monthly',
         ]), ARRAY_FILTER_USE_KEY);
     }
 
