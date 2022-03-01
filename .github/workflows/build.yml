@@ -6,7 +6,7 @@ on:
   pull_request:
     types: [ opened, synchronize, reopened ]
 jobs:
-  testing7.4:
+  testing-php7:
     name: "Testing PHP 7.4"
     runs-on: ubuntu-latest
     steps:
@@ -24,7 +24,7 @@ jobs:
         run: composer install --prefer-dist --no-interaction --no-progress
       - name: Execute tests
         run: vendor/bin/phpunit --verbose
-  testing8.0:
+  testing-php8:
     name: "Testing PHP 8.0"
     runs-on: ubuntu-latest
     steps:
