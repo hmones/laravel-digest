@@ -63,6 +63,15 @@ class FrequencyDigestTest extends TestCase
         $this->assertEquals(DigestModel::count(), 0);
     }
 
+    public function test_no_email_is_sent_if_frequency_specified_and_day_not_passed(): void
+    {
+        config(['laravel-digest.amount.threshold' => 1]);
+        $this->addEmails($this->testData, $this->batchName, DigestModel::DAILY);
+        Mail::assertNothingQueued();
+        Mail::assertNothingSent();
+        $this->assertEquals(DigestModel::count(), 3);
+    }
+
     public function test_weekly_emails_sent_successfully(): void
     {
         $this->addEmails($this->testData, $this->batchName, DigestModel::WEEKLY);

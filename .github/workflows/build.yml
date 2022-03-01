@@ -6,8 +6,26 @@ on:
   pull_request:
     types: [ opened, synchronize, reopened ]
 jobs:
-  testing:
-    name: Testing
+  testing7.4:
+    name: "Testing PHP 7.4"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          extensions: dom, curl, libxml, mbstring, redis, zip
+          coverage: none
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+      - name: Execute tests
+        run: vendor/bin/phpunit --verbose
+  testing8.0:
+    name: "Testing PHP 8.0"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
