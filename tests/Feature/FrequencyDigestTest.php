@@ -95,17 +95,17 @@ class FrequencyDigestTest extends TestCase
     public function test_custom_emails_sent_successfully(): void
     {
         config(['laravel-digest.frequency' => [
-            'enabled'   => true,
+            'enabled' => true,
             'daily' => [
-                'time'      => '12:00',
+                'time' => '12:00',
             ],
             'weekly' => [
-                'time'      => '13:00',
-                'day'       => 1,
+                'time' => '13:00',
+                'day' => 1,
             ],
             'monthly' => [
-                'time'      => '14:00',
-                'day'       => 2,
+                'time' => '14:00',
+                'day' => 2,
             ],
             'test' => '0 0 1 1 *',
         ]]);

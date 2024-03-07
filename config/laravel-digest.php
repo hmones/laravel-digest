@@ -16,17 +16,17 @@ return [
      * for monthly mails the day is the day of the month and for weekly mails the day is the day of the week, where sunday is 1
      */
     'frequency' => [
-        'enabled'   => env('DIGEST_FREQUENCY_ENABLED', true),
+        'enabled' => env('DIGEST_FREQUENCY_ENABLED', true),
         'daily' => [
-            'time'      => env('DIGEST_DAILY_TIME', '00:00'),
+            'time' => env('DIGEST_DAILY_TIME', '00:00'),
         ],
         'weekly' => [
-            'time'      => env('DIGEST_WEEKLY_TIME', '00:00'),
-            'day'       => env('DIGEST_WEEKLY_DAY', 1),
+            'time' => env('DIGEST_WEEKLY_TIME', '00:00'),
+            'day' => env('DIGEST_WEEKLY_DAY', 1),
         ],
         'monthly' => [
-            'time'      => env('DIGEST_MONTHLY_TIME', '00:00'),
-            'day'       => env('DIGEST_MONTHLY_DAY', 1),
+            'time' => env('DIGEST_MONTHLY_TIME', '00:00'),
+            'day' => env('DIGEST_MONTHLY_DAY', 1),
         ],
         /*
          * You can define here multiple custom scenarios under different names, that fits your needs,
@@ -41,7 +41,7 @@ return [
      * This can be optimum for frequently recurring issues on your app that you would like to be informed about after certain threshold
      */
     'amount' => [
-        'enabled'   => env('DIGEST_AMOUNT_ENABLED', true),
+        'enabled' => env('DIGEST_AMOUNT_ENABLED', true),
         'threshold' => env('DIGEST_AMOUNT_THRESHOLD', 10),
     ],
 ];
