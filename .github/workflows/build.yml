@@ -42,7 +42,7 @@ jobs:
         run: composer install --prefer-dist --no-interaction --no-progress
       - name: Execute tests
         run: vendor/bin/phpunit --verbose
-  testing-php83:
+  testing-php82:
     name: "Testing PHP 8.2"
     runs-on: ubuntu-latest
     steps:
@@ -59,4 +59,4 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
       - name: Execute tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit --migrate-configuration
