@@ -15,7 +15,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup php
-        uses: shivammathur/setup-php@2.35.5
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
         with:
           php-version: 7.4
           extensions: dom, curl, libxml, mbstring, redis, zip
@@ -33,7 +33,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup php
-        uses: shivammathur/setup-php@2.35.5
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
         with:
           php-version: 8.0
           extensions: dom, curl, libxml, mbstring, redis, zip
@@ -51,7 +51,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup php
-        uses: shivammathur/setup-php@2.35.5
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
         with:
           php-version: 8.2
           extensions: dom, curl, libxml, mbstring, redis, zip
@@ -69,7 +69,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup php
-        uses: shivammathur/setup-php@2.35.5
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
         with:
           php-version: 8.3
           extensions: dom, curl, libxml, mbstring, redis, zip
@@ -87,7 +87,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup php
-        uses: shivammathur/setup-php@2.35.5
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
         with:
           php-version: 8.4
           extensions: dom, curl, libxml, mbstring, redis, zip
