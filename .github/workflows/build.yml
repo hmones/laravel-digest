@@ -15,7 +15,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup php
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
         with:
           php-version: 7.4
           extensions: dom, curl, libxml, mbstring, redis, zip
@@ -33,7 +33,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup php
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
         with:
           php-version: 8.0
           extensions: dom, curl, libxml, mbstring, redis, zip
@@ -51,7 +51,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup php
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
         with:
           php-version: 8.2
           extensions: dom, curl, libxml, mbstring, redis, zip
@@ -59,4 +59,40 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
       - name: Execute tests
-        run: vendor/bin/phpunit --migrate-configuration
+        run: vendor/bin/phpunit --migrate-configuration || true && vendor/bin/phpunit
+  testing-php83:
+    name: "Testing PHP 8.3"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup php
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
+        with:
+          php-version: 8.3
+          extensions: dom, curl, libxml, mbstring, redis, zip
+          coverage: none
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+      - name: Execute tests
+        run: vendor/bin/phpunit --migrate-configuration || true && vendor/bin/phpunit
+  testing-php84:
+    name: "Testing PHP 8.4"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Setup php
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f
+        with:
+          php-version: 8.4
+          extensions: dom, curl, libxml, mbstring, redis, zip
+          coverage: none
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+      - name: Execute tests
+        run: vendor/bin/phpunit --migrate-configuration || true && vendor/bin/phpunit

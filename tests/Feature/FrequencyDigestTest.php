@@ -6,13 +6,13 @@ use Hmones\LaravelDigest\Mail\DefaultMailable;
 use Hmones\LaravelDigest\Models\Digest as DigestModel;
 use Hmones\LaravelDigest\Tests\TestCase;
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class FrequencyDigestTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     protected $dailyDigestCommand = 'digest:send daily';
     protected $weeklyDigestCommand = 'digest:send weekly';
