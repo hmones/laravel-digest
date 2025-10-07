@@ -34,7 +34,7 @@ class TestCase extends Test
         ];
     }
 
-    protected function addEmails(array $data, string $batch = 'testBatch', string $frequency = null): void
+    protected function addEmails(array $data, string $batch = 'testBatch', ?string $frequency = null): void
     {
         foreach ($data as $record) {
             Digest::add($batch, DefaultMailable::class, $record, $frequency);
